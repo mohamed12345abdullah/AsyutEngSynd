@@ -96,4 +96,7 @@ app.use((err, req, res, next) => {
         process.exit(1);
     }
 })();
+
+
+module.exports = app;
  
