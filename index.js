@@ -32,24 +32,16 @@ app.use((req, res, next) => {
 // Routes
 
 const authRoutes = require("./routes/authRoutes");
-const instructorRoutes = require("./routes/instructorRoutes");
-const courseRoutes = require("./routes/courseRoutes");
+
 // const statisticsRoutes = require("./routes/statisticsRoutes");
 const userRoutes = require("./routes/userRoutes");
-const groupRoutes = require("./routes/groupRoutes");
-const studentRoutes = require("./routes/studentRoutes");
-const requestsRoutes = require("./routes/requestsRoutes");
+
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static('uploads'));
 
 app.use("/api/auth", authRoutes); 
 app.use("/api/users", userRoutes);
-app.use("/api/courses", courseRoutes);
-app.use("/api/instructor",instructorRoutes)
-app.use("/api/groups",groupRoutes)
-app.use("/api/students",studentRoutes)
-app.use("/api/requests",requestsRoutes)
 
 app.get("*", (req, res) => { 
     Logger.info('Root endpoint accessed');  
@@ -61,7 +53,7 @@ app.use((err, req, res, next) => {
     // تسجيل تفاصيل الخطأ
     Logger.error('Server Error:', {
         message: err.message,
-        stack: err.stack,
+        stack: err.stack, 
         path: req.path,
         method: req.method,
         statusCode: err.statusCode || 500,

@@ -64,27 +64,22 @@ const sendVerificationChangePasswordEmail = async (email, name, verificationUrl)
 const authController = {
     // تسجيل مستخدم جديد
     register: asyncHandler(async (req, res) => {
-        const { email, password, name ,phone} = req.body;
+        const { email, password, name ,info } = req.body;
         const existingUser = await User.findOne({ email });
         if (existingUser ) {
             throw new AppError('user already exists  ', 400);
         }
         // إنشاء المستخدم الجديد
-        const verificationToken =await generateToken({ email , name ,password,phone}  , '30m');
+        const verificationToken =await generateToken({ email , name ,password,info}  , '30m');
 
         const verificationUrl = `${process.env.BASE_URL}/api/auth/verify-email/${verificationToken}`;
         
        
-        const emailSent = await sendVerificationEmail(email, name, verificationUrl);
-        if (emailSent instanceof AppError) {
-            throw emailSent;
-        }
-
+ 
         res.status(201).json({
             success: true,
-            message: 'تم إنشاء الحساب بنجاح. من فضلك تحقق من بريدك الإلكتروني (بما في ذلك قسم الرسائل غير المهمة) لتفعيل الحساب.'
+            message:"user created successfully"
         });
-
     }),
 
     // تسجيل الدخول

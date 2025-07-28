@@ -1,93 +1,90 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الرئيسية - CodeMinds</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" href="./css/style.css">
+    <title>web course</title>
+    <link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-content">
-                <div class="logo">
-                    <a href="./index.html">
-                        <img src="./imgs/logo.png" alt="CodeMinds Logo">
-                    </a>
+    <nav>
+        <div class="logo">
+            <img src="imgs/asy.enc" alt="logo">
+        </div>
+        <a href="#hero">الرئيسية</a>
+        <a href="#members">الفريق</a>
+        <a href="#projectis">المشاريع</a>
+        <a href="#contact">تواصل معنا</a>
+    </nav>
+    <section id="hero">
+        <div class="hero-bg">
+            <div class="slider-container">
+                <button class="slider-arrow left" id="prevSlide">&#10094;</button>
+                <div class="slider">
+                    <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80" class="slide active" alt="slide1">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" class="slide" alt="slide2">
+                    <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80" class="slide" alt="slide3">
                 </div>
-                <div id="authButtons" class="nav-buttons">
-                    <a href="./login.html" class="btn">تسجيل الدخول</a>
-                    <a href="./register.html" class="btn btn-primary">إنشاء حساب</a>
-                    <div class="google-login">
-                        <button id="googleLoginBtn" class="btn btn-google" type="button">
-                            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" style="width:20px;vertical-align:middle;margin-left:8px;">
-                            تسجيل الدخول باستخدام جوجل
-                        </button>
-                    </div>
+                <button class="slider-arrow right" id="nextSlide">&#10095;</button>
+            </div>
+            <div class="hero-content">
+                <h2>مرحبًا بكم في موقع فريقنا</h2>
+                <p>نحن فريق طموح نعمل على مشاريع ويب مبتكرة ونسعى لتقديم أفضل الحلول التقنية.</p>
+            </div>
+        </div>
+    </section>
+    <section id="members">
+        <h2 style="text-align:center;">أعضاء الفريق</h2>
+        <div class="team-container">
+            <div class="member-card">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Member 1" class="member-photo">
+                <div class="member-name">محمد أحمد</div>
+                <div class="member-role">قائد الفريق</div>
+                <div class="member-bio">طالب هندسة برمجيات، شغوف بتطوير الويب والتقنيات الحديثة.</div>
+                <div class="social-links">
+                    <a href="#" title="LinkedIn">🔗</a>
+                    <a href="#" title="Twitter">🐦</a>
                 </div>
-                <div id="userMenu" style="display: none;">
-                    <span id="userName"></span>
-                    <button id="logoutButton" onclick="handleLogout()" class="btn" data-original-text="تسجيل الخروج">
-                        تسجيل الخروج
-                    </button>
+            </div>
+            <div class="member-card">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Member 2" class="member-photo">
+                <div class="member-name">سارة علي</div>
+                <div class="member-role">مصممة واجهات</div>
+                <div class="member-bio">تهتم بتصميم واجهات المستخدم وتجربة المستخدم.</div>
+                <div class="social-links">
+                    <a href="#" title="LinkedIn">🔗</a>
+                    <a href="#" title="Behance">🎨</a>
+                </div>
+            </div>
+            <div class="member-card">
+                <img src="https://randomuser.me/api/portraits/men/65.jpg" alt="Member 3" class="member-photo">
+                <div class="member-name">أحمد سمير</div>
+                <div class="member-role">مطور باك اند</div>
+                <div class="member-bio">متخصص في تطوير الخوادم وقواعد البيانات.</div>
+                <div class="social-links">
+                    <a href="#" title="GitHub">🐙</a>
                 </div>
             </div>
         </div>
-    </nav>
-
-    <main>
-        <section class="hero-section">
-            <div class="container">
-                <h1> ASYUT ENGINEERING SYNDICATE</h1>
-                <p class="hero-text">Welcome to ASYUT ENGINEERING SYNDICATE</p>
-                <div class="hero-buttons">
-                    <a href="./register.html" class="btn btn-primary">ابدأ الآن مجاناً</a>
-                    <a href="#features" class="btn btn-secondary">تعرف على المزيد</a>
-                </div>
-            </div>
-        </section>
-
-        <section id="features" class="features-section">
-            <div class="container">
-                <h2 class="section-title">Features</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <h3>Features</h3>
-                        <p>Features</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Features</h3>
-                        <p>Features</p>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-    </main>
-
-
-    <section class="courses-section">
-        <div class="container">
-            <h2 class="section-title">Courses</h2>
-            <div class="courses-grid">
-                <!--    سيتم إضافة كورسات هنا ديناميكياً -->
-            </div>
-        </div>  
     </section>
-
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="./js/utils/logger.js"></script>
-    <script src="./js/utils.js"></script>
-    <script src="./js/home.js"></script>
-    <script>
-        document.getElementById('googleLoginBtn').onclick = function() {
-            // غير الرابط حسب بيئة الباك اند (لوكال أو production)
-            window.location.href = 'http://localhost:4000/api/auth/google';
-            // أو لو على Vercel:
-            // window.location.href = 'https://code-minds-website.vercel.app/api/auth/google';
-        };
-    </script>
+    <section id="projectis">
+        <h2 style="text-align:center;">مشاريع الفريق</h2>
+        <div class="projects-container">
+            <div class="project-card">
+                <div class="project-title">نظام إدارة المهام</div>
+                <div class="project-desc">تطبيق ويب يساعد الفرق على تنظيم ومتابعة المهام بكفاءة.</div>
+            </div>
+            <div class="project-card">
+                <div class="project-title">موقع تعليمي تفاعلي</div>
+                <div class="project-desc">منصة لتقديم الدروس التفاعلية واختبارات أونلاين للطلاب.</div>
+            </div>
+        </div>
+    </section>
+    <footer id="contact">
+        <div>جميع الحقوق محفوظة &copy; فريق الويب 2024</div>
+        <div>للتواصل: <a href="mailto:team@email.com" style="color:#ffd700;">team@email.com</a></div>
+    </footer>
+    <script src="js/script.js"></script>
 </body>
-</html> 
+</html>
