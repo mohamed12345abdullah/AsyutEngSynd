@@ -1,52 +1,272 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول - CodeMinds</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" href="./css/style.css">
+    <title>تسجيل الدخول - فريق الويب</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            padding: 20px;
+        }
+        
+        .login-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .login-header {
+            margin-bottom: 30px;
+        }
+        
+        .login-header h1 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .login-header p {
+            color: var(--muted);
+            font-size: 1.1em;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text);
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: 'Cairo', Arial, sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 700;
+            font-family: 'Cairo', Arial, sans-serif;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .login-btn:active {
+            transform: translateY(0);
+        }
+        
+        .login-footer {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .login-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s;
+        }
+        
+        .login-footer a:hover {
+            color: var(--primary-dark);
+        }
+        
+        .back-home {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            color: var(--primary-dark);
+            font-weight: 700;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .back-home:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+            font-weight: 700;
+        }
+        
+        .success-message {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+            font-weight: 700;
+        }
+        
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            .login-header h1 {
+                font-size: 1.6em;
+            }
+            
+            .back-home {
+                top: 10px;
+                right: 10px;
+                padding: 8px 16px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-content">
-                <div class="logo">
-                    <a href="./index.html">
-                        <img src="./imgs/logo.png" alt="CodeMinds Logo">
-                    </a>
+    <a href="index.html" class="back-home">العودة للرئيسية</a>
+    
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>تسجيل الدخول</h1>
+                <p>أدخل بياناتك للوصول لحسابك</p>
+            </div>
+            
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">البريد الإلكتروني</label>
+                    <input type="email" id="email" name="email" required placeholder="أدخل بريدك الإلكتروني">
                 </div>
+                
+                <div class="form-group">
+                    <label for="password">كلمة المرور</label>
+                    <input type="password" id="password" name="password" required placeholder="أدخل كلمة المرور">
+                </div>
+                
+                <button type="submit" class="login-btn">تسجيل الدخول</button>
+            </form>
+            
+            <div class="login-footer">
+                <p>ليس لديك حساب؟ <a href="register.html">انضم للفريق</a></p>
+                <p><a href="#" onclick="forgotPassword()">نسيت كلمة المرور؟</a></p>
             </div>
         </div>
-    </nav>
+    </div>
 
-    <main>
-        <div class="container">
-            <div class="auth-container">
-                <h2 class="text-center mb-4">تسجيل الدخول</h2>
-                <form id="loginForm" novalidate>
-                    <div class="form-group">
-                        <label for="email">البريد الإلكتروني</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">كلمة المرور</label>
-                        <input type="password" id="password" name="password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100" data-original-text="تسجيل الدخول">
-                        تسجيل الدخول
-                    </button>
-                </form>
-                <p class="text-center mt-3">
-                    ليس لديك حساب؟ <a href="./register.html">سجل الآن</a>
-                </p>
-            </div>
-        </div>
-    </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="./js/utils.js"></script>
-    <script src="./js/login.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Hide previous messages
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+            
+            // Basic validation
+            if (!email || !password) {
+                showError('يرجى ملء جميع الحقول المطلوبة');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showError('يرجى إدخال بريد إلكتروني صحيح');
+                return;
+            }
+            
+            // Simulate login process
+            showSuccess('جاري تسجيل الدخول...');
+            
+            // Here you would typically send the data to your backend
+            // For now, we'll simulate a successful login after 2 seconds
+            setTimeout(() => {
+                showSuccess('تم تسجيل الدخول بنجاح!');
+                // Redirect to dashboard or home page after successful login
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            }, 2000);
+        });
+        
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+        
+        function showSuccess(message) {
+            const successMessage = document.getElementById('successMessage');
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+        }
+        
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        function forgotPassword() {
+            const email = document.getElementById('email').value;
+            if (!email) {
+                showError('يرجى إدخال بريدك الإلكتروني أولاً');
+                return;
+            }
+            showSuccess('تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني');
+        }
+    </script>
 </body>
-</html> 
+</html>
