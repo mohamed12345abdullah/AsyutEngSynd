@@ -85,9 +85,8 @@ const authController = {
     // تسجيل الدخول
     login: asyncHandler(async (req, res) => {
         const { email, password ,rememberMe } = req.body;  
-
+  
         let user = await User.findOne({ email })
-        .populate('profileRef')
   
         if (!user ) {
             throw new AppError('user not found', 401);
@@ -103,36 +102,6 @@ const authController = {
         user.authToken = authToken;
         await user.save();
         if (!user) throw new AppError('User not found', 404);
-        
-        // خطوة 1: populate لـ profileRef 
-        if(user.role==='student'){
-            await user.populate({
-            path: 'profileRef',
-            model: user.profileModel, // Student مثلاً
-            populate: [
-                { path: 'courses' ,select:'title _id imageURL ' },
-                { path: 'groups' ,select:'title _id startDate endDate ',
-                    populate:{
-                        path:'instructor',
-                        select:'name '
-                    },
-                    populate:{
-                        path:'course',
-                        select:'title '
-                    },
-                    populate:{
-                        path:'lectures',
-                        // select:'title '
-                    }
-                 }
-            ]
-            });
-        }
-        else if(user.role==='instructor'){
-            await user.populate({
-                path: 'profileRef'
-            });
-        }
         
         res.status(200).json({
             success: true,

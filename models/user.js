@@ -16,39 +16,10 @@ const userSchema = new mongoose.Schema({
         trim: true,
         match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'email is invalid']
     },
-    phone: {
-        type: String,
-        required: [true, 'phone is required'],
-        match: [/^01[0-2,5]{1}[0-9]{8}$/, 'phone is invalid'],
-        trim: true,
-    },
     password: {
         type: String,
         minlength: [8, 'password must be at least 8 characters long'],
         required: [true, 'password is required']
-    },
-    role: {
-        type: String,
-        enum: ['user','student', 'instructor', 'manager', 'admin'],
-        default: 'user'
-    },
-    authToken: String,
-    profileRef:{
-        type: mongoose.Schema.Types.ObjectId,
-        refPath: 'profileModel'
-    },
-    profileModel:{
-        type: String,
-        enum: ['Student', 'Instructor', 'Manager', 'Admin'],
-        default:null
-    },
-    history:{
-        type: Array,
-        default: []
-    },
-    resetPasswordTokenUsed: {
-        type: Boolean,
-        default: false
     },
     googleId: {
         type: String,
