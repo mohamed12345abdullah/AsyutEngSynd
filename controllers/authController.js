@@ -70,6 +70,13 @@ const authController = {
             throw new AppError('user already exists  ', 400);
         }
         // إنشاء المستخدم الجديد
+        const hashedPassword=bcrypt.hashSync(password, 10); 
+        const user=await User.create({
+            email,
+            password:hashedPassword,
+            name,
+            info
+        })
         const verificationToken =await generateToken({ email , name ,password,info}  , '30m');
 
         const verificationUrl = `${process.env.BASE_URL}/api/auth/verify-email/${verificationToken}`;

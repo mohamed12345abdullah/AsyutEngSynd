@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: [true, 'email is required'],
-        unique: true,
+        unique: [true,'email already exists'],
         lowercase: true,
         trim: true,
         match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'email is invalid']
@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     },
     googleId: {
         type: String,
-        unique: true,
+        unique: [true,'googleId already exists'],
         sparse: true
     },
     avatar: {
