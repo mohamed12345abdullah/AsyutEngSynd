@@ -82,6 +82,16 @@ const getViews = asyncHandler(async (req, res) => {
 // });
 
 
+const getAllUsers = asyncHandler(async (req, res) => {
+    const users = await User.find({});
+    res.status(200).json({
+        success: true,
+        users
+    });
+});
+
+
+
 
 
 
@@ -89,5 +99,6 @@ const getViews = asyncHandler(async (req, res) => {
 module.exports = {
     viewUser,
     getViews,
+    getAllUsers,
     // uploadFileToGoogleDrive
 }

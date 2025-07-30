@@ -6,6 +6,7 @@ const { upload } = require('../utils/fileUpload');
 const uploadFileToGoogleDrive = require('../utils/googleDrive');
 
 const controller = require('../controllers/userController');
+router.get("/",controller.getAllUsers)
 router.post('/view', controller.viewUser);
 router.get('/views', controller.getViews);
 
