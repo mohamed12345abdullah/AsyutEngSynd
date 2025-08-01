@@ -35,6 +35,7 @@ const authRoutes = require("./routes/authRoutes");
 
 // const statisticsRoutes = require("./routes/statisticsRoutes");
 const userRoutes = require("./routes/userRoutes");
+const productRoutes = require("./routes/product"); // Add this line
 
 
 app.use('/', express.static(path.join(__dirname, 'public')));
@@ -42,6 +43,7 @@ app.use('/uploads', express.static('uploads'));
 
 app.use("/api/auth", authRoutes); 
 app.use("/api/users", userRoutes);
+app.use("/api/products", productRoutes); // Add this line
 
 app.get("*", (req, res) => { 
     Logger.info('Root endpoint accessed');  

@@ -1,0 +1,22 @@
+const express = require('express');
+const router = express.Router();
+const controller = require('../controllers/productController');
+
+// Use the existing JWT middleware
+const { auth } = require('../middlewares/jwt');
+
+// Public routes
+router.get('/', controller.getAllProducts);
+router.get('/search', controller.searchProducts);
+router.get('/category/:category', controller.getProductsByCategory);
+router.get('/stats', controller.getProductStats);
+router.get('/:id', controller.getProductById);
+ 
+// Protected routes (require authentication using JWT)
+router.post('/', auth, controller.createProduct);
+router.put('/:id', auth, controller.updateProduct);
+router.delete('/:id', auth, controller.deleteProduct);
+router.post('/:id/reviews', auth, controller.addReview);
+router.patch('/:id/stock', auth, controller.updateStock);
+
+module.exports = router;
