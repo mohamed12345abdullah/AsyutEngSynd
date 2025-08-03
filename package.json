@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon exam.js",
+    "dev": "nodemon index.js",
     "build": "node index.js"
   }
 }

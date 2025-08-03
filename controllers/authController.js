@@ -110,9 +110,11 @@ const authController = {
         await user.save();
         if (!user) throw new AppError('User not found', 404);
         
+        
         res.status(200).json({
             success: true,
-            token: authToken,
+            token: authToken,   
+
             user,
             message: 'تم تسجيل الدخول بنجاح'
         });

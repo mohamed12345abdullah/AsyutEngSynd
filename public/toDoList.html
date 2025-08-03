@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة المهام - فريق الويب</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .todo-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            padding: 20px;
+        }
+        
+        .todo-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .todo-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .todo-header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .todo-main {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .todo-form {
+            padding: 30px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            flex: 1;
+        }
+        
+        .form-group.full-width {
+            flex: none;
+            width: 100%;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text);
+            font-weight: 700;
+            font-size: 1em;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: 'Cairo', Arial, sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .add-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 700;
+            font-family: 'Cairo', Arial, sans-serif;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        .add-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .todo-filters {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .filters-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .filter-group label {
+            font-weight: 700;
+            color: var(--text);
+            font-size: 0.9em;
+        }
+        
+        .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+        
+        .todo-list {
+            padding: 30px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .todo-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .todo-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .todo-item.completed {
+            opacity: 0.7;
+            background: #f8f9fa;
+        }
+        
+        .todo-item.completed .todo-title {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+        
+        .todo-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .todo-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 5px;
+            flex: 1;
+        }
+        
+        .todo-priority {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+        
+        .priority-high {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        .priority-medium {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+        
+        .priority-low {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+        
+        .todo-description {
+            color: var(--muted);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .todo-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9em;
+            color: var(--muted);
+        }
+        
+        .todo-date {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .todo-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .toggle-btn {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .toggle-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        .edit-btn {
+            background: #ffc107;
+            color: #212529;
+        }
+        
+        .edit-btn:hover {
+            background: #e0a800;
+        }
+        
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted);
+        }
+        
+        .empty-state i {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted);
+        }
+        
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .success-message {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .back-home {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            color: var(--primary-dark);
+            font-weight: 700;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .back-home:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .filters-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .todo-header-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .todo-meta {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            
+            .todo-actions {
+                justify-content: flex-start;
+            }
+            
+            .stats-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-home">العودة للرئيسية</a>
+    
+    <div class="todo-container">
+        <div class="todo-header">
+            <h1>قائمة المهام</h1>
+            <p>نظم مهامك وأحقق أهدافك</p>
+        </div>
+        
+        <div class="todo-main">
+            <!-- Add Todo Form -->
+            <div class="todo-form">
+                <form id="todoForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="title">عنوان المهمة</label>
+                            <input type="text" id="title" name="title" required placeholder="أدخل عنوان المهمة">
+                        </div>
+                        <div class="form-group">
+                            <label for="priority">الأولوية</label>
+                            <select id="priority" name="priority">
+                                <option value="منخفض">منخفض</option>
+                                <option value="متوسط" selected>متوسط</option>
+                                <option value="عالي">عالي</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="description">الوصف (اختياري)</label>
+                        <textarea id="description" name="description" placeholder="أدخل وصف المهمة..."></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dueDate">تاريخ الاستحقاق (اختياري)</label>
+                            <input type="datetime-local" id="dueDate" name="dueDate">
+                        </div>
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <button type="submit" class="add-btn">
+                                <i class="fas fa-plus"></i> إضافة مهمة
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Filters and Stats -->
+            <div class="todo-filters">
+                <div class="stats-cards" id="statsCards">
+                    <!-- Stats will be loaded here -->
+                </div>
+                
+                <div class="filters-row">
+                    <div class="filter-group">
+                        <label>الحالة:</label>
+                        <select id="statusFilter">
+                            <option value="">الكل</option>
+                            <option value="false">قيد التنفيذ</option>
+                            <option value="true">مكتمل</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>الأولوية:</label>
+                        <select id="priorityFilter">
+                            <option value="">الكل</option>
+                            <option value="منخفض">منخفض</option>
+                            <option value="متوسط">متوسط</option>
+                            <option value="عالي">عالي</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>الترتيب:</label>
+                        <select id="sortBy">
+                            <option value="createdAt">تاريخ الإنشاء</option>
+                            <option value="dueDate">تاريخ الاستحقاق</option>
+                            <option value="priority">الأولوية</option>
+                            <option value="title">العنوان</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Todo List -->
+            <div class="todo-list" id="todoList">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    جاري التحميل...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let todos = [];
+        let currentFilters = {
+            completed: '',
+            priority: '',
+            sortBy: 'createdAt',
+            sortOrder: 'desc'
+        };
+
+        // Check if user is logged in
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('يرجى تسجيل الدخول أولاً');
+                window.location.href = 'login.html';
+                return false;
+            }
+            return true;
+        }
+
+        // API functions
+        const API_BASE = '/api/todos';
+
+        async function apiRequest(endpoint, options = {}) {
+            const token = localStorage.getItem('token');
+            
+            const defaultOptions = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}${endpoint}`, {
+                    ...defaultOptions,
+                    ...options
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        localStorage.removeItem('token');
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error('API Error:', error);
+                throw error;
+            }
+        }
+
+        // Load todos
+        async function loadTodos() {
+            try {
+                const queryParams = new URLSearchParams();
+                if (currentFilters.completed !== '') {
+                    queryParams.append('completed', currentFilters.completed);
+                }
+                if (currentFilters.priority !== '') {
+                    queryParams.append('priority', currentFilters.priority);
+                }
+                queryParams.append('sortBy', currentFilters.sortBy);
+                queryParams.append('sortOrder', currentFilters.sortOrder);
+
+                const response = await apiRequest(`?${queryParams}`);
+                todos = response.data;
+                renderTodos();
+                loadStats();
+            } catch (error) {
+                showError('حدث خطأ في تحميل المهام');
+            }
+        }
+
+        // Load statistics
+        async function loadStats() {
+            try {
+                const response = await apiRequest('/stats');
+                const stats = response.data;
+                renderStats(stats);
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Create todo
+        async function createTodo(todoData) {
+            try {
+                const response = await apiRequest('', {
+                    method: 'POST',
+                    body: JSON.stringify(todoData)
+                });
+                
+                showSuccess('تم إضافة المهمة بنجاح');
+                document.getElementById('todoForm').reset();
+                loadTodos();
+            } catch (error) {
+                showError('حدث خطأ في إضافة المهمة');
+            }
+        }
+
+        // Toggle todo
+        async function toggleTodo(id) {
+            try {
+                const response = await apiRequest(`/${id}/toggle`, {
+                    method: 'PATCH'
+                });
+                
+                showSuccess(response.message);
+                loadTodos();
+            } catch (error) {
+                showError('حدث خطأ في تحديث المهمة');
+            }
+        }
+
+        // Delete todo
+        async function deleteTodo(id) {
+            if (!confirm('هل أنت متأكد من حذف هذه المهمة؟')) {
+                return;
+            }
+
+            try {
+                await apiRequest(`/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                showSuccess('تم حذف المهمة بنجاح');
+                loadTodos();
+            } catch (error) {
+                showError('حدث خطأ في حذف المهمة');
+            }
+        }
+
+        // Render functions
+        function renderTodos() {
+            const todoList = document.getElementById('todoList');
+            
+            if (todos.length === 0) {
+                todoList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>لا توجد مهام</h3>
+                        <p>ابدأ بإضافة مهمة جديدة</p>
+                    </div>
+                `;
+                return;
+            }
+
+            todoList.innerHTML = todos.map(todo => `
+                <div class="todo-item ${todo.completed ? 'completed' : ''}" data-id="${todo._id}">
+                    <div class="todo-header-row">
+                        <div class="todo-title">${todo.title}</div>
+                        <span class="todo-priority priority-${getPriorityClass(todo.priority)}">
+                            ${todo.priority}
+                        </span>
+                    </div>
+                    
+                    ${todo.description ? `<div class="todo-description">${todo.description}</div>` : ''}
+                    
+                    <div class="todo-meta">
+                        <div class="todo-date">
+                            <i class="fas fa-calendar"></i>
+                            ${formatDate(todo.createdAt)}
+                            ${todo.dueDate ? ` - يستحق: ${formatDate(todo.dueDate)}` : ''}
+                        </div>
+                        
+                        <div class="todo-actions">
+                            <button class="action-btn toggle-btn" onclick="toggleTodo('${todo._id}')">
+                                <i class="fas fa-${todo.completed ? 'undo' : 'check'}"></i>
+                                ${todo.completed ? 'إلغاء الإكمال' : 'إكمال'}
+                            </button>
+                            <button class="action-btn delete-btn" onclick="deleteTodo('${todo._id}')">
+                                <i class="fas fa-trash"></i>
+                                حذف
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderStats(stats) {
+            const statsCards = document.getElementById('statsCards');
+            
+            statsCards.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${stats.overall.total}</div>
+                    <div class="stat-label">إجمالي المهام</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${stats.overall.completed}</div>
+                    <div class="stat-label">مكتمل</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${stats.overall.pending}</div>
+                    <div class="stat-label">قيد التنفيذ</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${stats.overdue}</div>
+                    <div class="stat-label">متأخر</div>
+                </div>
+            `;
+        }
+
+        // Utility functions
+        function getPriorityClass(priority) {
+            const classes = {
+                'منخفض': 'low',
+                'متوسط': 'medium',
+                'عالي': 'high'
+            };
+            return classes[priority] || 'medium';
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ar-EG', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.textContent = message;
+            
+            const container = document.querySelector('.todo-main');
+            container.insertBefore(successDiv, container.firstChild);
+            
+            setTimeout(() => {
+                successDiv.remove();
+            }, 3000);
+        }
+
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+            
+            const container = document.querySelector('.todo-main');
+            container.insertBefore(errorDiv, container.firstChild);
+            
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 3000);
+        }
+
+        // Event listeners
+        document.getElementById('todoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const todoData = {
+                title: formData.get('title'),
+                description: formData.get('description'),
+                priority: formData.get('priority'),
+                dueDate: formData.get('dueDate') || undefined
+            };
+            
+            createTodo(todoData);
+        });
+
+        document.getElementById('statusFilter').addEventListener('change', function() {
+            currentFilters.completed = this.value;
+            loadTodos();
+        });
+
+        document.getElementById('priorityFilter').addEventListener('change', function() {
+            currentFilters.priority = this.value;
+            loadTodos();
+        });
+
+        document.getElementById('sortBy').addEventListener('change', function() {
+            currentFilters.sortBy = this.value;
+            loadTodos();
+        });
+
+        // Initialize
+        if (checkAuth()) {
+            loadTodos();
+        }
+    </script>
+</body>
+</html>
