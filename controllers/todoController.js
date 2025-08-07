@@ -37,8 +37,7 @@ const getTodoById = asyncHandler(async (req, res) => {
 
 // Create new todo
 const createTodo = asyncHandler(async (req, res) => {
-    try {
-        const { title, description, priority, dueDate } = req.body;
+    const { title, description, priority, dueDate } = req.body;
         
         const todoData = {
             title,
@@ -58,10 +57,6 @@ const createTodo = asyncHandler(async (req, res) => {
             data: todo
         });
         
-    } catch (error) {
-        Logger.error('Error creating todo:', error);
-        next(error);
-    }
 });
 
 // Update todo
